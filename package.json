@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/emarshall121/social-network/issues"
   },
-  "homepage": "https://github.com/emarshall121/social-network#readme"
+  "homepage": "https://github.com/emarshall121/social-network#readme",
+  "dependencies": {
+    "mongoose": "^5.12.4"
+  }
 }
