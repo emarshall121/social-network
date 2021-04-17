@@ -3,7 +3,7 @@ const dateFormat = require('../utils/dateFormat');
 
 const userSchema = new Schema (
   {
-    userName: {
+    username: {
       type: String,
       required: true,
       trim: true,
@@ -27,13 +27,13 @@ const userSchema = new Schema (
         ref: 'User'
       }
     ]
-  }
+  },
 )
 
 userSchema.virtual('friendCount').get(function() {
   return this.replies.length;
 });
 
-const userName = model('userName', userSchema);
+const User = model('User', userSchema);
 
-module.exports = userName;
+module.exports = User;

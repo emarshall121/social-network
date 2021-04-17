@@ -1,9 +1,20 @@
 const { Thought, User, Reaction } = require('../models');
 
 const thoughtController = {
+  // Get all thoughts
+  getAllThoughts({params, body}, res) {
+    Thought.find({})
+    .select('-__v')
+    .then(dbThoughtData => res.json(dbThoughtData))
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(400);
+    });
+  },
+
   // add thought to user
   addThought({ params, body }, res) {
-    console.log(params);
+    console.log(body);
     Thought.create(body)
       .then(({ _id }) => {
         return User.findOneAndUpdate(
@@ -40,7 +51,7 @@ const thoughtController = {
       .catch(err => res.json(err));
   },
 
-  // remove comment
+  // remove thought
   removeThought({ params }, res) {
     Thought.findOneAndDelete({ _id: params.thoughtId })
       .then(deletedThought => {
@@ -62,6 +73,7 @@ const thoughtController = {
       })
       .catch(err => res.json(err));
   },
+  
   // remove reaction
   removeReaction({ params }, res) {
     Thought.findOneAndUpdate(
@@ -71,7 +83,22 @@ const thoughtController = {
     )
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
-  }
+  },
+
+    // get thought by id
+    getThoughtById({ params }, res) {
+      Thought.findOne({ _id: params.thoughtId })
+        .populate({
+          path: 'comments',
+          select: '-__v'
+        })
+        .select('-__v')
+        .then(dbThoughtData => res.json(dbThoughtData))
+        .catch(err => {
+          console.log(err);
+          res.sendStatus(400);
+        });
+    },
 };
 
 module.exports = thoughtController;
