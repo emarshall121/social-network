@@ -3,7 +3,7 @@ const router = require('express').Router();
 const {
   getAllThoughts,
   addThought,
-  addReply,
+  addReaction,
   removeThought,
   removeReaction,
   getThoughtById,
@@ -24,7 +24,11 @@ router
   .put(updateThought)
 
 router
-  .route('/:thoughtId')
+  .route('/:thoughtId/reactions').post(addReaction)
+
+router
+  .route('/:thoughtId/reactions/:reactionId')
+  .delete(removeReaction)
 
 
   module.exports = router;

@@ -35,10 +35,10 @@ const thoughtController = {
   },
 
   // add reaction to comment
-  addReply({ params, body }, res) {
+  addReaction({ params, body }, res) {
     Thought.findOneAndUpdate(
       { _id: params.thoughtId },
-      { $push: { replies: body } },
+      { $push: { reactions: body } },
       { new: true, runValidators: true }
     )
       .then(dbUserData => {
@@ -77,7 +77,7 @@ const thoughtController = {
   // remove reaction
   removeReaction({ params }, res) {
     Thought.findOneAndUpdate(
-      { _id: params.thoughId },
+      { _id: params.thoughtId },
       { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }
     )
@@ -85,19 +85,19 @@ const thoughtController = {
       .catch(err => res.json(err));
   },
 
-    // get thought by id
-    getThoughtById({ params }, res) {
-      Thought.findOne({ _id: params.thoughtId })
-        .populate({
-          path: 'comments',
-          select: '-__v'
-        })
-        .select('-__v')
-        .then(dbThoughtData => res.json(dbThoughtData))
-        .catch(err => {
-          console.log(err);
-          res.sendStatus(400);
-        });
+  // get thought by id
+  getThoughtById({ params }, res) {
+    Thought.findOne({ _id: params.thoughtId })
+      .populate({
+        path: 'comments',
+        select: '-__v'
+      })
+      .select('-__v')
+      .then(dbThoughtData => res.json(dbThoughtData))
+      .catch(err => {
+        console.log(err);
+        res.sendStatus(400);
+      });
     },
 
   // update thought by id
